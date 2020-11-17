@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        h1{
+            background-color: #4CAF50;
+            color: white;
+            display: inline-flex;
+            text-align: center;
+            font-size: 20px;
+            padding-left: 10px;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        h2 {
+            color: #4472C4;
+        }
+
+        input[type=text],
+        input[type=number] {
+            width: 100%;
+            font-size: 20px;
+            font-family: Time New Romans;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+
+        textarea {
+            width: 100%;
+            font-size: 20px;
+            font-family: Time New Romans;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        #notes {
+            width: 100%;
+            font-size: 16px;
+            font-family: ;
+            padding: 5px 0px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+
+        label {
+            padding: 12px 12px 12px 0;
+            font-size: 20px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        button[type=button] {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        button[type=button]:hover {
+            background-color: #45a049;
+
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .col-25 {
+            float: left;
+            width: 60%;
+            margin-top: 6px;
+        }
+
+        .col-75 {
+            float: left;
+            width: 40%;
+            margin-top: 6px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+
+            .col-25,
+            .col-75,
+            input[type=submit] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+    </style>
+
+    <title>Sale Transfer fee calculator</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    <script>
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
+        function calculater() {
+
+            
+            
+            var propertyValue = document.getElementById('propertyValue').value;
+            var dubaiDepartmentTransferFee = propertyValue * .04;
+            if (!isNaN(dubaiDepartmentTransferFee)) {
+                document.getElementById('dubaiDepartmentTransferFee').value = dubaiDepartmentTransferFee;
+            }
+
+            var brokerageCommission = propertyValue * .02;
+
+            if (!isNaN(brokerageCommission)) {
+                document.getElementById('brokerageCommission').value = brokerageCommission;
+            }
+            
+            var propertySize = document.getElementById('propertySize').value;
+            var serviceCharge = document.getElementById('serviceCharge').value;
+            var yearlyServiceCharge = propertySize * serviceCharge;
+            if (!isNaN(yearlyServiceCharge)) {
+                document.getElementById('yearlyServiceCharge').value = yearlyServiceCharge;
+            }
+
+            var rentalContractValue = document.getElementById('rentalContractValue').value;
+            var securityDeposit = rentalContractValue * .05;
+
+            if (!isNaN(securityDeposit)) {
+                document.getElementById('securityDeposit').value = securityDeposit;
+            }
+
+
+        };
+
+
+        window.onload = function() {
+            document.getElementById("download").addEventListener("click", () => {
+                const print = this.document.getElementById("calculator");
+                console.log(calculator);
+                console.log(window);
+                var opt = {
+                    margin: .5,
+                    filename: "rio calculator.pdf",
+                    image: {
+                        type: 'png',
+                        quality: .9
+                    },
+                    html2canvas: {
+                        scale: 3
+                    },
+                    jsPDF: {
+                        unit: "in",
+                        format: 'letter'
+                    }
+                };
+                html2pdf().from(calculator).set(opt).save();
+            })
+        };
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <form action="/action_page.php">
+            <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;">
+            <h1><label for="file" style="cursor: pointer;">Click Here to Upload a Logo</label></h1>
+            <div id="calculator">
+                <div class="row">
+                    <div class="col-25">
+                        <img id="output" width="250" height="130" />
+                    </div>
+                    <div class="col-75">
+                        <textarea id="subject" name="subject" placeholder="Real Estate:
+Name:
+Email:
+Website:
+Mobile:" style="height:130px"></textarea>
+                    </div>
+                </div>
+
+                <h2>Property Details</h2>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Property Reference</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="propertyReference" placeholder="e.g.: Studio, Shamal Residences 2, JVC">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Property Size Sq.Ft</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="propertySize" placeholder="1000" onkeyup="calculater()" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Property Value</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="propertyValue" placeholder="1000000" onkeyup="calculater()" />
+                    </div>
+                </div>
+
+                <h2>Transfer Fees</h2>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Dubai Land Department Transfer Fee</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="dubaiDepartmentTransferFee" placeholder="40,000.00">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Brokerage Commission</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="brokerageCommission" placeholder="20,000.00"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Dubai Land Department Admin Fees</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="departmentAdminFees" placeholder="580" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Registration Trustee Fees</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="registrationTrusteeFees" placeholder="4200"/>
+                    </div>
+                </div>
+
+                <h2>Servie Charge Reimbursement </h2>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Service Charge Per Sq.Ft</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="serviceCharge" placeholder="15.00" onkeyup="calculater()" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Service Charge Per Year</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="yearlyServiceCharge" placeholder="15,000.00"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Service Charge Amount Paid by the Seller for The Year</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="serviceChargeAmountPaid" placeholder="0.00"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Amount To be Reimbursed from Buyer to Seller</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="amountTobeReimbursed" placeholder="0.00"/>
+                    </div>
+                </div>
+
+                <h2>Rent Details and Reimbursement (If property is rented)</h2>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Contract Start Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="contractStartDate" placeholder="1/1/2021"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Contract End Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="contractEndDate" placeholder="1/1/2022"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Number of Cheques</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="numberofCheques" placeholder="4"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Rental Contract Value</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="rentalContractValue" placeholder="100000" onkeyup="calculater()" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Security Deposit </label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="securityDeposit" placeholder="5,000.00"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="NetROI">Rent Amount Collected by Seller for the Year</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="Rent Amount Collected" placeholder="0.00"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label>Total Rent Amount to be Reimbursed/Transferred to Buyer</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="totalRentAmount" placeholder="0.00"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label >Security Deposit to be Reimbursed from Seller to Buyer</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="securityDeposittobeReimbursed" placeholder="5000.00"/>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <p>
+                        <h3>Notes:</h3>
+                        Required Documents: 1) Original title Deed. 2) Original NOC from Developer.
+                        3) MOU Sale agreement form-F. 4)Original passport, visa, Emirates ID (seller and buyer).
+                        Land Department Fees: 4% from selling price + 580 AED If Apartment, Villa (or + 430 AED If Land. Managers Chq.)
+                        Registration Trustee Fees: 4,000 AED + 200 AED (5%VAT) if the price of the property equal or more than 500,000 AED. (2,000 AED + 100 AED (5%VAT) if the price of the property less than 500,000 AED).
+                    </p>
+                </div>
+
+            </div>
+            <div class="row">
+                <button id="download" type="button">Download</button>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+</html>
